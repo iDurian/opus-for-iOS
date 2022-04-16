@@ -1,9 +1,14 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
-project(opus VERSION 1.3.1)
+project(Opus VERSION 1.3.1)
 
 add_library(opus
-        SHARED
+        ${LIBRARY_TYPE}
+        opus/opus-1.3.1/include/opus.h
+        opus/opus-1.3.1/include/opus_custom.h
+        opus/opus-1.3.1/include/opus_defines.h
+        opus/opus-1.3.1/include/opus_multistream.h
+        opus/opus-1.3.1/include/opus_types.h
         opus/opus-1.3.1/src/opus_multistream_decoder.c
         opus/opus-1.3.1/src/opus_multistream.c
         opus/opus-1.3.1/src/opus_encoder.c
@@ -140,6 +145,8 @@ add_library(opus
 
 include_directories(opus/opus-1.3.1/src opus/opus-1.3.1/include opus/opus-1.3.1/celt opus/opus-1.3.1/silk opus/opus-1.3.1/silk/float)
 
+target_include_directories(opus PUBLIC opus/opus-1.3.1/include)
+
 add_definitions(-DOPUS_BUILD -DSTDC_HEADERS -DVAR_ARRAYS)
 set_target_properties(opus PROPERTIES 
         PUBLIC_HEADER "opus/opus-1.3.1/include/opus.h;opus/opus-1.3.1/include/opus_custom.h;opus/opus-1.3.1/include/opus_defines.h;opus/opus-1.3.1/include/opus_multistream.h;opus/opus-1.3.1/include/opus_types.h"
@@ -152,12 +159,3 @@ set_target_properties(opus PROPERTIES
         SOVERSION 1.3.1
         XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
 )
-# install(TARGETS opus
-#         RUNTIME DESTINATION bin
-#         LIBRARY DESTINATION lib
-#         ARCHIVE DESTINATION lib
-#         PUBLIC_HEADER DESTINATION include)
-
-#find_library(log-lib log)
-#
-#target_link_libraries(opus ${log-lib})
